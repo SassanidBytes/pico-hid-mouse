@@ -28,10 +28,10 @@ int main(void) {
             uint32_t count = tud_cdc_read(buf, sizeof(buf));
             buf[count] = '\0';
             
-            int dx = 0, dy = 0;
-            if (sscanf(buf, "%d,%d", &dx, &dy) == 2) {
+            int btn = 0;
+            if (sscanf(buf, "%d", &btn) == 1) {
                 if (tud_hid_ready()) {
-                    tud_hid_mouse_report(0, 0, dx, dy, 0, 0);
+                    tud_hid_mouse_report(0, btn, 0, 0, 0, 0);
                 }
             }
         }
