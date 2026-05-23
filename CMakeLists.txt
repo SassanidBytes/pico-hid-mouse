@@ -3,10 +3,16 @@ include(pico_sdk_import.cmake)
 
 project(pico_hid C CXX ASM)
 set(CMAKE_C_STANDARD 11)
+set(PICO_BOARD pico)
 
 pico_sdk_init()
 
-add_executable(pico_hid main.c)
+add_executable(pico_hid main.c usb_descriptors.c)
+
+target_include_directories(pico_hid PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${PICO_SDK_PATH}/lib/tinyusb/src
+)
 
 target_link_libraries(pico_hid
     pico_stdlib
