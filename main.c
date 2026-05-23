@@ -23,13 +23,18 @@ int main(void) {
     while (1) {
         tud_task();
         
-        int dx = 0, dy = 0;
-        if (scanf("%d,%d", &dx, &dy) == 2) {
-            if (tud_hid_ready()) {
-                tud_hid_mouse_report(0, 0, dx, dy, 0, 0);
+        if (tud_cdc_available()) {
+            char buf[64];
+            uint32_t count = tud_cdc_read(buf, sizeof(buf));
+            buf[count] = '\0';
+            
+            int dx = 0, dy = 0;
+            if (sscanf(buf, "%d,%d", &dx, &dy) == 2) {
+                if (tud_hid_ready()) {
+                    tud_hid_mouse_report(0, 0, dx, dy, 0, 0);
+                }
             }
         }
     }
-
     return 0;
 }
